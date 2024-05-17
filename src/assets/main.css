@@ -1,0 +1,65 @@
+* {
+  font-family: 'Poppins';
+  color: white !important;
+  /* color: #198754; */
+  /* color: #146c43; */
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(180deg, #237a57, #093028);
+}
+
+#app {
+  min-height: 85vh;
+}
+
+#home {
+  min-height: calc(85vh - 80px);
+}
+
+#home .card {
+  min-width: 250px;
+  min-height: 250px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+#home .card:hover {
+  transform: scale(1.1);
+  box-shadow: 5px 5px 5px #093028;
+}
+
+#home .card h2 {
+  /* color: #093028 !important; */
+  font-size: 42px;
+  font-weight: 800;
+  z-index: 2;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #093028;
+}
+
+#home .card::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  right: -30%;
+  bottom: -30%;
+  opacity: 0.2;
+}
+
+#home .card.bg-primary::before {
+  background-image: url(./image/products.png);
+  background-size: 500px;
+  transform: rotate(-25deg);
+}
+
+#home .card.bg-success::before {
+  background-image: url(./image/orders.png);
+  background-size: 500px;
+  transform: rotate(25deg);
+}
