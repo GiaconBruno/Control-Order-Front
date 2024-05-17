@@ -5,6 +5,22 @@
   /* color: #146c43; */
 }
 
+.icon-spin {
+  width: 75px;
+  height: 107px;
+  animation: spin 1s infinite ease;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 body {
   min-height: 100vh;
   margin: 0;
@@ -20,15 +36,20 @@ body {
 }
 
 #home .card {
-  min-width: 250px;
-  min-height: 250px;
+  width: 250px;
+  height: 250px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   transition: all 0.3s;
 }
 
-#home .card:hover {
+#home .card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#home .card:not(.disabled):hover {
   transform: scale(1.1);
   box-shadow: 5px 5px 5px #093028;
 }
