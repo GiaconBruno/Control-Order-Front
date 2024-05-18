@@ -1,0 +1,1 @@
+formatMoney = (value) => value ? `R$ ${parseFloat(value).toFixed(2).replace('.',',')}` : value;

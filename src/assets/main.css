@@ -1,8 +1,35 @@
 * {
   font-family: 'Poppins';
-  color: white !important;
   /* color: #198754; */
   /* color: #146c43; */
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: #fff;
+  background: linear-gradient(180deg, #237a57, #093028);
+}
+
+.transition {
+  animation: uping 1s forwards ease;
+  opacity: 0.1;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+@keyframes uping {
+  from {
+    top: 50px;
+    opacity: 0.1;
+  }
+
+  to {
+    top: 0px;
+    opacity: 1;
+    position: relative;
+  }
 }
 
 .icon-spin {
@@ -21,23 +48,36 @@
   }
 }
 
-body {
-  min-height: 100vh;
-  margin: 0;
-  background: linear-gradient(180deg, #237a57, #093028);
-}
-
 #app {
   min-height: 85vh;
 }
 
+#content,
+#products {
+  min-height: calc(85vh - 80px);
+  /* overflow-y: auto; */
+  overflow-y: hidden;
+}
+
+.tabled {
+  background-color: lightgray;
+  border-radius: 0.5em;
+  color: #093028 !important;
+}
+
+.tabled .itens {
+  height: calc(85vh - 255px);
+  overflow-y: auto;
+}
+
 #home {
   min-height: calc(85vh - 80px);
+  color: #fff;
 }
 
 #home .card {
   width: 250px;
-  height: 250px;
+  height: 150px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -59,6 +99,7 @@ body {
   font-size: 42px;
   font-weight: 800;
   z-index: 2;
+  color: #fff;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: #093028;
 }
