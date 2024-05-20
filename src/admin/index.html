@@ -14,14 +14,40 @@
 </head>
 
 <body>
-  <div class="container text-center">
+  <div class="container text-center px-0">
     <div class="row min-vh-100 mx-0 align-items-center">
-      <div id="app" class="col-12 border rounded">
-        <h1 class="m-0 mt-3">Control-Order</h1>
-        <h5 class="m-0">Administrativo</h5>
-        <hr class="mb-0">
-        <div id="content" class="position-relative"></div>
-      </div>
+      <section>
+        <div id="app" class="border rounded position-relative" style="padding:0 12px;">
+          <h1 class="m-0 mt-3">Control-Order</h1>
+          <h5 class="m-0">Administrativo</h5>
+          <hr class="mb-0">
+          <div id="notification" class="position-absolute"></div>
+          <div id="content" class="position-relative"></div>
+          <div id="modalConfirm" class="modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <button type="button" class="btn-close ms-auto p-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body text-dark text-start"><p>Deseja deletar <b id="deleteItem"></b>?</p></div>
+                <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                  <button id="confirmRemove" type="button" class="btn btn-sm btn-outline-danger">Deletar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer>
+          <div class="row mx-0 pt-1 justify-content-center">
+            <p class="col-auto m-0 p-0">Desenvolvido por: <span class="text-decoration-underline">Bruno Giacon</span></p>
+            <a class="col-auto px-2 text-white" href="mailto:giacon_bruno@hotmail.com">
+              <i class="bi-envelope-at" title="giacon_bruno@hotmail.com"></i></a>
+            <a class="col-auto px-2 text-white" href="https://github.com/GiaconBruno/" target="_blank">
+              <i class="bi-github" title="GiaconBruno"></i></a>
+            <a class="col-auto px-2 text-white" href="https://www.instagram.com/brunogiacon" target="_blank">
+              <i class="bi-instagram" title="@brunogiacon"></i></a>
+          </div>
+        </footer>
+      </section>
     </div>
   </div>
 

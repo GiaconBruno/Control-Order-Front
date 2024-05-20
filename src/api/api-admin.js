@@ -1,21 +1,66 @@
-axios.defaults.baseURL = 'http://192.168.1.7:3000';
+axios.defaults.baseURL = `http://${location.hostname}:3000`;
 axios.defaults.timeout = 5000;
 
-const server = () => {
+server = () => {
   let promise = new Promise((resolve, reject) => {
     // setTimeout(() => reject(false), 500);return
-    axios.get('/')
+    axios.get(`/`)
       .then((response) => resolve(response.data))
-      .catch((error) => reject(error));
+      .catch((error) => reject(error.response));
   })
   return promise;
 }
 
-const getProducts = () => {
+getProducts = () => {
   let promise = new Promise((resolve, reject) => {
-    axios.get('/api/products')
+    axios.get(`/api/products`)
       .then((response) => resolve(response.data))
-      .catch((error) => reject(error));
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
+storeProduct = (item) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.post(`/api/product`, item)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
+updateProduct = (hash, item) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.patch(`/api/product/${hash}`, item)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
+deleteProduct = (hash) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.delete(`/api/product/${hash}`)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
+getDailyOrders = () => {
+  let promise = new Promise((resolve, reject) => {
+    axios.get(`/api/orders/list`)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
+getOrders = (date) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.get(`/api/order?data=${date}`)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
   })
   return promise;
 }

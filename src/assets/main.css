@@ -52,6 +52,12 @@ body {
   min-height: 85vh;
 }
 
+#notification {
+  top: 20px;
+  right: 5px;
+  min-width: 50vh;
+}
+
 #content,
 #products {
   min-height: calc(85vh - 80px);
@@ -68,6 +74,15 @@ body {
 .tabled .itens {
   height: calc(85vh - 255px);
   overflow-y: auto;
+}
+
+.pointer {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pointer:hover {
+  transform: scale(1.1);
 }
 
 #home {
@@ -100,6 +115,7 @@ body {
   font-weight: 800;
   z-index: 2;
   color: #fff;
+  user-select: none;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: #093028;
 }
@@ -124,4 +140,16 @@ body {
   background-image: url(./image/orders.png);
   background-size: 500px;
   transform: rotate(25deg);
+}
+
+#dailyOrders .list {
+  height: calc(85vh - 197px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#dailyOrders .card {
+  padding: 20px 0;
+  border-width: 2px;
+  user-select: none;
 }
