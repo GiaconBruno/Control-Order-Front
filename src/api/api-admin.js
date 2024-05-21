@@ -64,3 +64,21 @@ getOrders = (date) => {
   })
   return promise;
 }
+
+changeStatus = (date, hash, status) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.post(`/api/order/${hash}/${status}?data=${date}`)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
+deleteOrder = (date, hash, item) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.delete(`/api/order/${hash}/${item}?data=${date}`)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}

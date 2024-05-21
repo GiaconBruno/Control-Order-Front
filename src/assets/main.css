@@ -48,6 +48,36 @@ body {
   }
 }
 
+.anime-shake {
+  animation: spin 8s infinite ease;
+}
+
+@keyframes spin {
+  2% {
+    transform: scale(0.95);
+  }
+
+  4% {
+    transform: scale(1.05);
+  }
+
+  6% {
+    transform: scale(0.95);
+  }
+
+  8% {
+    transform: scale(1.05);
+  }
+
+  10% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 #app {
   min-height: 85vh;
 }
@@ -143,7 +173,7 @@ body {
 }
 
 #dailyOrders .list {
-  height: calc(85vh - 197px);
+  height: calc(85vh - 204px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -151,5 +181,10 @@ body {
 #dailyOrders .card {
   padding: 20px 0;
   border-width: 2px;
+  user-select: none;
+}
+
+#dailyOrders label {
+  font-size: 12px;
   user-select: none;
 }

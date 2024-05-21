@@ -49,9 +49,9 @@ createChangeProd = (hash) => {
 }
 
 removeProd = (hash) => {
-  iModal.hide();
   deleteProduct(hash).then((res) => [notify('success', res.mensagem), listProd()])
     .catch((err) => fixedError(err))
+    .finally(() => iModal.hide());
 }
 
 listDailyOrders = () => {
@@ -61,8 +61,20 @@ listDailyOrders = () => {
     .finally(() => renderDailyOrders());
 }
 
-listOrders = (date) => {
+listOrders = (date, full) => {
   getOrders(date).then((res) => setStorage('orders', res))
     .catch(() => setStorage('status', false))
-    .finally(() => renderOrders(date));
+    .finally(() => renderOrders(date, !full));
+}
+
+alterStatus = (date, hash, status) => {
+  changeStatus(date, hash, status).then((res) => [notify('success', res.mensagem), listOrders(date, false)])
+    .catch((err) => fixedError(err))
+    .finally(() => iModal.hide());
+}
+
+cancelItem = (date, hash, status) => {
+  deleteOrder(date, hash, status).then((res) => [notify('success', res.mensagem), listOrders(date, false)])
+    .catch((err) => fixedError(err))
+    .finally(() => iModal.hide());
 }
