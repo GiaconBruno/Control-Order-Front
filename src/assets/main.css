@@ -160,6 +160,12 @@ body {
   opacity: 0.2;
 }
 
+#home .card.bg-secondary::before {
+  background-image: url(./image/settings.png);
+  background-size: 500px;
+  transform: rotate(-25deg);
+}
+
 #home .card.bg-primary::before {
   background-image: url(./image/products.png);
   background-size: 500px;
@@ -172,6 +178,12 @@ body {
   transform: rotate(25deg);
 }
 
+#formSettings textarea {
+  width: 100%;
+  min-height: 62px;
+  max-height: 100px;
+}
+
 #dailyOrders .list {
   height: calc(85vh - 204px);
   overflow-y: auto;
@@ -179,8 +191,8 @@ body {
 }
 
 #dailyOrders .card {
-  padding: 20px 0;
-  border-width: 2px;
+  padding: 5px 0;
+  border-width: 3px;
   user-select: none;
 }
 

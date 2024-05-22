@@ -33,6 +33,19 @@ srv = () => {
     .finally(() => init());
 }
 
+settings = () => {
+  loading();
+  getSettings().then((res) => setStorage('settings', res))
+    .catch(() => setStorage('status', false))
+    .finally(() => renderSettings());
+}
+
+createSettings = () => {
+  const item = { image: loadImg.src, company: confName.value, description: confMsg.value }
+  updateSettings(item).then((res) => notify('success', res.mensagem))
+    .catch(() => notify('danger', 'Imagem incompativel!'))
+}
+
 listProd = () => {
   loading();
   getProducts().then((res) => setStorage('products', res))
@@ -41,7 +54,7 @@ listProd = () => {
 }
 
 createChangeProd = (hash) => {
-  const item = { descricao: prodDesc.value, valor: prodValue.value, estoque: prodStq.value }
+  const item = { descricao: prodDesc.value, valor: parseFloat(prodValue.value), estoque: parseFloat(prodStq.value) }
   if (!hash) storeProduct(item).then((res) => [notify('success', res.mensagem), listProd()])
     .catch((err) => fixedError(err))
   else updateProduct(hash, item).then((res) => [notify('success', res.mensagem), listProd()])

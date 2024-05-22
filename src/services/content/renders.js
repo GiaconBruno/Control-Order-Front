@@ -22,6 +22,9 @@ init = () => {
   else {
     content.innerHTML = `
     <div id="home" class="row mx-0 align-items-center justify-content-around transition">
+      <div onclick="settings();" class="col-md-auto px-3 py-3 card border-white bg-secondary" style="--bs-bg-opacity: .85;">
+        <h2 class="my-auto">Config.</h2>
+      </div>
       <div onclick="listProd();" class="col-md-auto px-3 py-3 card border-white bg-primary" style="--bs-bg-opacity: .85;">
         <h2 class="my-auto">Produtos</h2>
       </div>
@@ -29,6 +32,47 @@ init = () => {
         <h2 class="my-auto">Pedidos</h2>
       </div>
     </div>`
+  }
+}
+
+renderSettings = () => {
+  const app = JSON.parse(localStorage.getItem('app'));
+  content.innerHTML = ``;
+  if (!app.status) srvFail()
+  else {
+    content.innerHTML = `<div id="formSettings" class="row mx-0 mt-3 justify-content-center transition">
+      <div class="col-lg-6 border border-white rounded">
+        <h3 class="m-0 my-2">Configurações:</h3>
+        <hr class="my-2">
+        <label for="confImg" style="cursor:pointer;">
+          <img id="loadImg" src="" class="rounded" width="150px" height="150px" /></label>
+        <input id="confImg" type="file" class="d-none my-2"/>
+        <input id="confName" type="text" placeholder="Nome" class="form-control ms-auto my-2" />
+        <textarea id="confMsg" type="text" placeholder="Mensagem" row="3" class="form-control ms-auto my-2"> </textarea>
+        <hr class="my-2">
+        <div class="row justify-content-between mx-0 my-3">
+          <div class="col-auto">
+            <button onclick="init();" class="btn btn-sm btn-secondary border-white"><i class="bi-arrow-left-circle me-1 align-middle"></i>Voltar</button>
+          </div>
+          <div class="col-auto">
+            <button onclick="createSettings()" class="btn btn-sm btn-success border-white"><i class="bi-disc me-1 align-middle"></i>Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    confImg.addEventListener('change', (event) => {
+      var reader = new FileReader();
+      reader.onload = () => {
+        var dataURL = reader.result;
+        loadImg.src = dataURL;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    });
+    if (app.settings) {
+      if (app.settings.image) loadImg.src = (app.settings.image || '')
+      confName.value = (app.settings.company || '')
+      confMsg.value = (app.settings.description || '')
+    }
   }
 }
 
@@ -87,7 +131,7 @@ modifyProducts = (hash) => {
   content.innerHTML = ``;
   if (!app.status) srvFail()
   else {
-    content.innerHTML = `<div id="formProd" class="row mx-0 justify-content-center transition">
+    content.innerHTML = `<div id="formProd" class="row mx-0 mt-3 justify-content-center transition">
       <div class="col-lg-6 border border-white rounded">
         <h3 class="m-0 my-2">Cadastro</h3>
         <hr class="my-2">
@@ -126,9 +170,12 @@ renderDailyOrders = () => {
   let dailyOrders = '';
   if (!app.status) srvFail()
   else {
-    app.dailyOrders.map(o => dailyOrders += `<div onclick="listOrders('${o}',true)" class="col-6 col-lg-3 py-3 px-lg-5">
+    app.dailyOrders.map(o => dailyOrders += `<div onclick="listOrders('${o.file}',true)" class="col-6 col-lg-3 py-3 px-lg-5">
         <div class="card border-warning text-warning-emphasis pointer">
-          <i class="bi-journal-medical pb-3 fs-2"></i>${formatDate(o)}</div>
+          <i class="bi-journal-medical pb-3 fs-2"></i>
+          ${formatDate(o.file)}
+          <small class="m-0">(${o.qtd}) ${formatMoney(o.total)}</small>
+        </div>
       </div>`)
     content.innerHTML = `<div id="dailyOrders" class="transition">
       <div class="row justify-content-between mx-0 my-3">
@@ -166,7 +213,7 @@ renderOrders = (date, att) => {
     clearInterval(myRefresh);
     myRefresh = setTimeout(() => {
       listOrders(date, false);
-    }, 5000);
+    }, 30000);
     orders = '';
     filtro = '';
     validStatus = [];
@@ -203,7 +250,7 @@ renderOrders = (date, att) => {
             <h4 class="my-0 align-baseline">${o.name} <small class="fs-6">(${o.device})</small></h4>
             <hr class="my-2">
             <div class="row mx-0 justify-content-around">
-              <div onclick="alterStatus('${date}','${o.hash}','started')" class="col-auto px-2 me-1 pointer border border-white rounded bg-primary">S</div>
+              <div onclick="alterStatus('${date}','${o.hash}','started')" class="col-auto px-2 me-1 pointer border border-white rounded bg-primary">N</div>
               <div onclick="alterStatus('${date}','${o.hash}','preparing')" class="col-auto px-2 me-1 pointer border border-white rounded bg-secondary">P</div>
               <div onclick="alterStatus('${date}','${o.hash}','paid')" class="col-auto px-2 me-1 pointer border border-white rounded bg-success">$</div>
               <div onclick="alterStatus('${date}','${o.hash}','canceled')" class="col-auto px-1 me-1 pointer border border-white rounded bg-danger">C</div>
@@ -223,7 +270,7 @@ renderOrders = (date, att) => {
     if (!att) content.innerHTML = `<div id="dailyOrders" class="transition">
       <div class="row mx-0 my-3 align-items-center justify-content-between">
         <div class="col-auto ps-0">
-          <button onclick="renderDailyOrders();clearInterval(myRefresh);" class="btn btn-sm btn-secondary border-white"><i class="bi-arrow-left-circle me-1 align-middle"></i>Voltar</button>
+          <button onclick="listDailyOrders();clearInterval(myRefresh);" class="btn btn-sm btn-secondary border-white"><i class="bi-arrow-left-circle me-1 align-middle"></i>Voltar</button>
         </div>
         <div class="col col-md-6 col-lg-4 px-0 me-lg-1 ms-auto">
           <input onkeyup="search()" id="txtSearch" type="text" class="form-control form-control-sm" placeholder="Pesquisar..." />

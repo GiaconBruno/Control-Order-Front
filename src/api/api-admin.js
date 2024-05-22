@@ -11,6 +11,24 @@ server = () => {
   return promise;
 }
 
+getSettings = () => {
+  let promise = new Promise((resolve, reject) => {
+    axios.get(`/api/settings`)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
+updateSettings = (item) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.post(`/api/settings`, item)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
 getProducts = () => {
   let promise = new Promise((resolve, reject) => {
     axios.get(`/api/products`)
