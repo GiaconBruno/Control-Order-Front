@@ -26,6 +26,7 @@ fixedError = (error) => {
   }
 }
 
+// Admin
 srv = () => {
   loading();
   server().then((res) => setStorage('status', res))
@@ -41,7 +42,7 @@ settings = () => {
 }
 
 createSettings = () => {
-  const item = { image: loadImg.src, company: confName.value, description: confMsg.value }
+  const item = { image: loadImg.src, company: confName.value, PIX: confPIX.value, description: confMsg.value }
   updateSettings(item).then((res) => notify('success', res.mensagem))
     .catch(() => notify('danger', 'Imagem incompativel!'))
 }

@@ -49,10 +49,11 @@ body {
 }
 
 .anime-shake {
-  animation: spin 8s infinite ease;
+  animation: shake 8s infinite ease;
+  animation-delay: 1s;
 }
 
-@keyframes spin {
+@keyframes shake {
   2% {
     transform: scale(0.95);
   }
@@ -79,17 +80,16 @@ body {
 }
 
 #app {
-  min-height: 85vh;
+  /* min-height: 85vh; */
 }
 
 #notification {
   top: 20px;
   right: 5px;
-  min-width: 50vh;
+  min-width: 25vw;
 }
 
-#content,
-#products {
+#content {
   min-height: calc(85vh - 80px);
   /* overflow-y: auto; */
   overflow-y: hidden;
@@ -199,4 +199,17 @@ body {
 #dailyOrders label {
   font-size: 12px;
   user-select: none;
+}
+
+#client #txtDisp {
+  user-select: none;
+}
+
+@media screen and (max-width: 992px) {
+  #notification {
+    min-width: 80vw;
+  }
+  #dailyOrders .list {
+    height: calc(85vh - 221px);
+  }
 }

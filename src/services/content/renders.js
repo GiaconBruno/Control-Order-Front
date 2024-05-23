@@ -1,5 +1,3 @@
-srv();
-
 srvFail = () => content.innerHTML = `<h3 class="mt-4">Servidor Offline!</h3>
   <buttom onclick="srv();" class="btn btn-secondary border-white text-black">Atualizar</buttom>`;
 
@@ -48,6 +46,7 @@ renderSettings = () => {
           <img id="loadImg" src="" class="rounded" width="150px" height="150px" /></label>
         <input id="confImg" type="file" class="d-none my-2"/>
         <input id="confName" type="text" placeholder="Nome" class="form-control ms-auto my-2" />
+        <input id="confPIX" type="text" placeholder="PIX" class="form-control ms-auto my-2" />
         <textarea id="confMsg" type="text" placeholder="Mensagem" row="3" class="form-control ms-auto my-2"> </textarea>
         <hr class="my-2">
         <div class="row justify-content-between mx-0 my-3">
@@ -71,6 +70,7 @@ renderSettings = () => {
     if (app.settings) {
       if (app.settings.image) loadImg.src = (app.settings.image || '')
       confName.value = (app.settings.company || '')
+      confPIX.value = (app.settings.PIX || '')
       confMsg.value = (app.settings.description || '')
     }
   }
