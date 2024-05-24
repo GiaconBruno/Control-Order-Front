@@ -7,25 +7,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Control-Order</title>
   <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="./assets/bootstrap.min.css">
-  <link rel="stylesheet" href="./assets/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="./assets/Poppings.css">
-  <link rel="stylesheet" href="./assets/main.css">
+  <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./assets/css/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="./assets/css/Poppings.css">
+  <link rel="stylesheet" href="./assets/css/main.css">
 </head>
 
 <body>
   <div class="container text-center px-0">
     <div class="row min-vh-100-old pt-3 mx-0 align-items-center">
-      <section>
+      <section class="px-1">
         <div id="app" class="border rounded position-relative" style="padding:0 12px;">
-          <h1 class="m-0 mt-3">Control-Order</h1>
+          <h1 class="m-0 mt-3"><span ondblclick="window.location.href='/admin'">Control</span>-Order</h1>
           <hr class="mb-0">
-          <div id="notification" class="position-absolute"></div>
           <div id="content" class="position-relative"></div>
+          <div id="notification" class="position-fixed"></div>
         </div>
         <footer>
           <div class="row mx-0 pt-1 justify-content-center">
-            <p class="col-auto m-0 p-0"><span onclick="window.location.href='/admin'">Desenvolvido</span> por: <span
+            <p class="col-auto m-0 p-0">Desenvolvido por: <span
                 class="text-decoration-underline">Bruno Giacon</span></p>
             <a class="col-auto px-2 text-white" href="mailto:giacon_bruno@hotmail.com">
               <i class="bi-envelope-at" title="giacon_bruno@hotmail.com"></i></a>
@@ -39,13 +39,13 @@
     </div>
   </div>
 
-  <script src="./services/axios.min.js"></script>
-  <script src="./services/bootstrap.bundle.min.js"></script>
-  <script src="./services/popper.min.js"></script>
-  <script src="./services/bootstrap.min.js"></script>
+  <script src="./assets/js/axios.min.js"></script>
+  <script src="./assets/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/js/popper.min.js"></script>
+  <script src="./assets/js/bootstrap.min.js"></script>
   <script src="./api/apis.js"></script>
   <script src="./services/content/dispatchClient.js"></script>
-  <script src="./services/content/common.js"></script>
+  <script src="./services/common.js"></script>
   <script src="./services/content/renderClient.js"></script>
   <script>start()</script>
 </body>

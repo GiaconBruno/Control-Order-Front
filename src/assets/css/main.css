@@ -79,14 +79,16 @@ body {
   }
 }
 
-#app {
-  /* min-height: 85vh; */
+#notification {
+  top: 25px;
+  right: 8vw;
+  min-width: 25vw;
+  z-index: 999;
 }
 
-#notification {
-  top: 20px;
-  right: 5px;
-  min-width: 25vw;
+#app h1,
+#clientProd #clientListProd {
+  user-select: none;
 }
 
 #content {
@@ -122,7 +124,7 @@ body {
 
 #home .card {
   width: 250px;
-  height: 150px;
+  height: 125px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -161,19 +163,19 @@ body {
 }
 
 #home .card.bg-secondary::before {
-  background-image: url(./image/settings.png);
+  background-image: url(../image/settings.png);
   background-size: 500px;
   transform: rotate(-25deg);
 }
 
 #home .card.bg-primary::before {
-  background-image: url(./image/products.png);
+  background-image: url(../image/products.png);
   background-size: 500px;
   transform: rotate(-25deg);
 }
 
 #home .card.bg-success::before {
-  background-image: url(./image/orders.png);
+  background-image: url(../image/orders.png);
   background-size: 500px;
   transform: rotate(25deg);
 }
@@ -205,10 +207,26 @@ body {
   user-select: none;
 }
 
+#clientListProd {
+  max-height: calc(85vh - 269px);
+  overflow-y: auto;
+}
+
+#resumeItens {
+  max-height: calc(85vh - 314px);
+  overflow-y: auto;
+}
+
+#clientListProd .bg-white {
+  min-width: 28px;
+  height: 32px;
+}
+
 @media screen and (max-width: 992px) {
   #notification {
     min-width: 80vw;
   }
+
   #dailyOrders .list {
     height: calc(85vh - 221px);
   }

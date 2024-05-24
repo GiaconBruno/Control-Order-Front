@@ -20,6 +20,7 @@ init = () => {
   else {
     content.innerHTML = `
     <div id="home" class="row mx-0 align-items-center justify-content-around transition">
+    <h3 class="m-0">Módulos:</h3>
       <div onclick="settings();" class="col-md-auto px-3 py-3 card border-white bg-secondary" style="--bs-bg-opacity: .85;">
         <h2 class="my-auto">Config.</h2>
       </div>
@@ -136,7 +137,7 @@ modifyProducts = (hash) => {
         <h3 class="m-0 my-2">Cadastro</h3>
         <hr class="my-2">
         <input id="prodDesc" type="text" placeholder="Descrição" class="form-control my-2" />
-        <input id="prodValue" type="number" placeholder="Valor R$" min="0.01" class="form-control ms-auto my-2 w-50" />
+        <input id="prodValue" type="number" placeholder="Valor R$ (maior que 0)" min="0.01" class="form-control ms-auto my-2 w-50" />
         <input id="prodStq" type="number" placeholder="Estoque" min="0" class="form-control ms-auto my-2 w-50" />
         <hr class="my-2">
         <div class="row justify-content-between mx-0 my-3">

@@ -3,7 +3,6 @@ getStorage = () => {
   if (!client) [localStorage.setItem('client', JSON.stringify({})), client = {}]
   return client;
 }
-getStorage();
 setStorage = (att, value) => {
   const client = getStorage();
   client[att] = value;
@@ -22,20 +21,21 @@ fixedError = (error) => {
   try { notify('danger', error.data.mensagem) }
   catch {
     setStorage('status', false)
-    init()
+    start()
   }
 }
 
 // Client
 start = () => {
+  let client = '';
   server().then((res) => {
     setStorage('status', res);
-    const client = JSON.parse(localStorage.getItem('client'));
+    client = JSON.parse(localStorage.getItem('client'));
     if (!client.info || !client.info.disp) client.info = { user: '', disp: res.reverse()[0] };
-    localStorage.setItem('client', JSON.stringify(client))
+    localStorage.setItem('client', JSON.stringify(client));
   })
     .catch(() => setStorage('status', false))
-    .finally(() => primary());
+    .finally(() => (!client.info || (!client.info.user || !client.info.disp)) ? primary() : listarProd());
 }
 
 primary = () => {
@@ -49,5 +49,15 @@ listarProd = () => {
   loading();
   getProducts().then((res) => setStorage('products', res))
     .catch(() => setStorage('status', false))
-    .finally(() => mountOrder());
+    .finally(() => mountListProducts());
+}
+
+finishOrder = () => {
+  loading();
+  const order = JSON.parse(localStorage.getItem('client')).order;
+  order.products = order.products.filter(p => p.qtd > 0);
+  createOrder(order).then((res) => [setStorage('order', {}), notify('success', res.mensagem)])
+    .catch(() => setStorage('status', false))
+    .finally(() => start());
+
 }

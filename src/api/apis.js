@@ -100,3 +100,12 @@ deleteOrder = (date, hash, item) => {
   })
   return promise;
 }
+
+createOrder = (payload) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.post(`/api/client/create`, payload)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
