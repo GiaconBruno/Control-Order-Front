@@ -19,8 +19,8 @@ init = () => {
   if (!app.status) srvFail()
   else {
     content.innerHTML = `
-    <div id="home" class="row mx-0 align-items-center justify-content-around transition">
     <h3 class="m-0">Módulos:</h3>
+    <div id="home" class="row mx-0 align-items-center justify-content-around transition">
       <div onclick="settings();" class="col-md-auto px-3 py-3 card border-white bg-secondary" style="--bs-bg-opacity: .85;">
         <h2 class="my-auto">Config.</h2>
       </div>
@@ -234,13 +234,13 @@ renderOrders = (date, att) => {
       total = { x: 0, value: 0, row: '' };
       (o.products).map((item, i) => {
         itens += `<div class="row m-0 justify-content-between${!item.status ? ' text-decoration-line-through' : ''}">
-          <div onclick="showModal('item: ${item.descricao}','cancelItem','${date},${o.hash},${item.hashItem}')" class="col-auto px-0 me-2">
-          ${(item.status && o.status != 'canceled') ? '<span class="pointer px-1 bg-white rounded"><i class="bi-trash-fill text-danger"></i></span>' : ''}
-          <span class="col-auto m-0 p-0">1x ${item.descricao} </span></div>
+          <div class="col-auto px-0 me-2"> ${(item.status && o.status != 'canceled') ? `<span onclick="showModal('item: ${item.descricao}','cancelItem','${date},${o.hash},${item.hashItem}')"
+             class="pointer px-1 bg-white rounded"><i class="bi-trash-fill text-danger"></i></span>` : ''}
+          <span class="col-auto m-0 p-0">${item.qtd}x ${item.descricao} </span></div>
           <p class="col-auto m-0 p-0">${formatMoney(item.valor)}</p></div>
         <hr class="my-2">`;
-        if (item.status) total.x++;
-        if (item.status) total.value += (o.status != 'canceled') ? item.valor : 0;
+        if (item.status) total.x += parseFloat(item.qtd);
+        if (item.status) total.value += (o.status != 'canceled') ? parseFloat(item.valor) : 0;
         if (i == ((o.products).length - 1)) total.row = `<div class="row m-0 justify-content-between">
           <p class="col-auto m-0 p-0">(${total.x}) Total </p>
           <p class="col-auto  m-0 p-0"><b>${formatMoney(total.value)}</b></p></div>`
@@ -248,7 +248,7 @@ renderOrders = (date, att) => {
       if (validStatus.includes(o.status) && (buscar(o.name) || buscar(o.device)))
         orders += `<div class="col-lg-4 py-3${(o.status == 'started') ? ' anime-shake' : ''}">
           <div class="card p-2 p-lg-3 border-white text-white bg-${theme(o.status)}" style="--bs-bg-opacity: .7;">
-            <h4 class="my-0 align-baseline">${o.name} <small class="fs-6">(${o.device})</small></h4>
+            <h4 class="my-0 align-baseline">${o.name}</h4><small style="font-size:0.675em;">(${o.device})</small>
             <hr class="my-2">
             <div class="row mx-0 justify-content-around">
               <div onclick="alterStatus('${date}','${o.hash}','started')" class="col-auto px-2 me-1 pointer border border-white rounded bg-primary">N</div>

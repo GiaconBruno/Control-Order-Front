@@ -35,7 +35,15 @@ start = () => {
     localStorage.setItem('client', JSON.stringify(client));
   })
     .catch(() => setStorage('status', false))
-    .finally(() => (!client.info || (!client.info.user || !client.info.disp)) ? primary() : listarProd());
+    .finally(() => primary());
+  // .finally(() => (!client.info || (!client.info.user || !client.info.disp)) ? primary() : listarProd());
+}
+
+historic = (device) => {
+  loading();
+  getResume(device).then((res) => setStorage('historic', res.content))
+    .catch(() => setStorage('status', false))
+    .finally(() => renderHistoric());
 }
 
 primary = () => {

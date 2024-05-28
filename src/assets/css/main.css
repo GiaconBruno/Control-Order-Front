@@ -118,7 +118,7 @@ body {
 }
 
 #home {
-  min-height: calc(85vh - 80px);
+  min-height: calc(85vh - 113px);
   color: #fff;
 }
 
@@ -205,6 +205,11 @@ body {
 
 #client #txtDisp {
   user-select: none;
+}
+
+#historic #orders {
+  max-height: calc(85vh - 255px);
+  overflow-y: auto;
 }
 
 #clientListProd {
