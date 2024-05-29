@@ -19,16 +19,18 @@ init = () => {
   if (!app.status) srvFail()
   else {
     content.innerHTML = `
-    <h3 class="m-0">Módulos:</h3>
-    <div id="home" class="row mx-0 align-items-center justify-content-around transition">
-      <div onclick="settings();" class="col-md-auto px-3 py-3 card border-white bg-secondary" style="--bs-bg-opacity: .85;">
-        <h2 class="my-auto">Config.</h2>
-      </div>
-      <div onclick="listProd();" class="col-md-auto px-3 py-3 card border-white bg-primary" style="--bs-bg-opacity: .85;">
-        <h2 class="my-auto">Produtos</h2>
-      </div>
-      <div onclick="listDailyOrders()" class="col-md-auto px-3 py-3 card border-white bg-success" style="--bs-bg-opacity: .85;">
-        <h2 class="my-auto">Pedidos</h2>
+    <div id="home" class="pt-3 transition">
+      <h3 class="col-12 m-0">Módulos:</h3>
+      <div id="home" class="row mx-0 align-items-center justify-content-around">
+        <div onclick="settings();" class="col-md-auto px-3 py-3 card border-white bg-secondary" style="--bs-bg-opacity: .85;">
+          <h2 class="my-auto">Config.</h2>
+        </div>
+        <div onclick="listProd();" class="col-md-auto px-3 py-3 card border-white bg-primary" style="--bs-bg-opacity: .85;">
+          <h2 class="my-auto">Produtos</h2>
+        </div>
+        <div onclick="listDailyOrders()" class="col-md-auto px-3 py-3 card border-white bg-success" style="--bs-bg-opacity: .85;">
+          <h2 class="my-auto">Pedidos</h2>
+        </div>
       </div>
     </div>`
   }
@@ -137,7 +139,7 @@ modifyProducts = (hash) => {
         <h3 class="m-0 my-2">Cadastro</h3>
         <hr class="my-2">
         <input id="prodDesc" type="text" placeholder="Descrição" class="form-control my-2" />
-        <input id="prodValue" type="number" placeholder="Valor R$ (maior que 0)" min="0.01" class="form-control ms-auto my-2 w-50" />
+        <input id="prodValue" type="number" placeholder="R$(min:0.01)" min="0.01" class="form-control ms-auto my-2 w-50" />
         <input id="prodStq" type="number" placeholder="Estoque" min="0" class="form-control ms-auto my-2 w-50" />
         <hr class="my-2">
         <div class="row justify-content-between mx-0 my-3">
@@ -199,6 +201,7 @@ renderOrders = (date, att) => {
   let filtro = '';
   let validStatus = ['started', 'preparing', 'paid', 'canceled'];
   let total = { x: 0, value: 0, row: '' };
+  let resume = { x: 0, paid: 0, y: 0, pending: 0, row: '' };
 
   theme = (status) => {
     switch (status) {
@@ -208,6 +211,14 @@ renderOrders = (date, att) => {
       case 'canceled': color = 'danger'; break;
     }
     return color;
+  }
+
+  checkedAll = () => {
+    checkS.checked = checkAll.checked;
+    checkP.checked = checkAll.checked;
+    checkPg.checked = checkAll.checked;
+    checkC.checked = checkAll.checked;
+    search();
   }
 
   search = () => {
@@ -223,47 +234,55 @@ renderOrders = (date, att) => {
     if (checkPg.checked) validStatus.push('paid');
     if (checkC.checked) validStatus.push('canceled');
     if (txtSearch.value) filtro = txtSearch.value;
+    checkAll.checked = (checkS.checked && checkP.checked && checkPg.checked && checkC.checked);
     mountOrder();
   }
 
   buscar = (payload) => (payload.toLowerCase()).split(`${filtro.toLocaleLowerCase()}`).length > 1;
 
   mountOrder = () => {
+    resume = { x: 0, paid: 0, y: 0, pending: 0, row: '' };
     (app.orders).map(o => {
       itens = '';
       total = { x: 0, value: 0, row: '' };
-      (o.products).map((item, i) => {
-        itens += `<div class="row m-0 justify-content-between${!item.status ? ' text-decoration-line-through' : ''}">
-          <div class="col-auto px-0 me-2"> ${(item.status && o.status != 'canceled') ? `<span onclick="showModal('item: ${item.descricao}','cancelItem','${date},${o.hash},${item.hashItem}')"
-             class="pointer px-1 bg-white rounded"><i class="bi-trash-fill text-danger"></i></span>` : ''}
-          <span class="col-auto m-0 p-0">${item.qtd}x ${item.descricao} </span></div>
-          <p class="col-auto m-0 p-0">${formatMoney(item.valor)}</p></div>
-        <hr class="my-2">`;
-        if (item.status) total.x += parseFloat(item.qtd);
-        if (item.status) total.value += (o.status != 'canceled') ? parseFloat(item.valor) : 0;
-        if (i == ((o.products).length - 1)) total.row = `<div class="row m-0 justify-content-between">
+      if (validStatus.includes(o.status) && (buscar(o.name) || buscar(o.device))) {
+        (o.products).map((item, i) => {
+          itens += `<div class="row m-0 justify-content-between${!item.status ? ' text-decoration-line-through' : ''}">
+            <div class="col-auto text-start px-0 me-auto"> ${(item.status && o.status != 'canceled') ? `<span onclick="showModal('item: ${item.descricao}','cancelItem','${date},${o.hash},${item.hashItem}')"
+              title="Cancelar" class="pointer px-1 bg-white rounded"><i class="bi-trash-fill text-danger"></i></span>` : ''}
+            <span class="col-auto m-0 p-0">${item.qtd}x ${item.descricao} </span></div>
+            <p class="col-auto m-0 ms-auto p-0">${formatMoney(item.valor)}</p></div>
+          <hr class="my-2">`;
+
+          if (item.status) total.x += parseFloat(item.qtd);
+          if (item.status) total.value += (o.status != 'canceled') ? parseFloat(item.valor) : 0;
+          if (i == ((o.products).length - 1)) total.row = `<div class="row m-0 justify-content-between">
           <p class="col-auto m-0 p-0">(${total.x}) Total </p>
-          <p class="col-auto  m-0 p-0"><b>${formatMoney(total.value)}</b></p></div>`
-      });
-      if (validStatus.includes(o.status) && (buscar(o.name) || buscar(o.device)))
-        orders += `<div class="col-lg-4 py-3${(o.status == 'started') ? ' anime-shake' : ''}">
+          <p class="col-auto  m-0 p-0"><b>${formatMoney(total.value)}</b></p></div>`;
+
+          if (['paid'].includes(o.status) && item.status) { resume.x += item.qtd; resume.paid += parseFloat(item.valor) };
+          if (['started', 'preparing'].includes(o.status) && item.status) { resume.y += item.qtd; resume.pending += parseFloat(item.valor) };
+        });
+        orders += `<div class="col-lg-4 pb-3${(o.status == 'started') ? ' anime-shake' : ''}">
           <div class="card p-2 p-lg-3 border-white text-white bg-${theme(o.status)}" style="--bs-bg-opacity: .7;">
             <h4 class="my-0 align-baseline">${o.name}</h4><small style="font-size:0.675em;">(${o.device})</small>
             <hr class="my-2">
             <div class="row mx-0 justify-content-around">
-              <div onclick="alterStatus('${date}','${o.hash}','started')" class="col-auto px-2 me-1 pointer border border-white rounded bg-primary">N</div>
-              <div onclick="alterStatus('${date}','${o.hash}','preparing')" class="col-auto px-2 me-1 pointer border border-white rounded bg-secondary">P</div>
-              <div onclick="alterStatus('${date}','${o.hash}','paid')" class="col-auto px-2 me-1 pointer border border-white rounded bg-success">$</div>
-              <div onclick="alterStatus('${date}','${o.hash}','canceled')" class="col-auto px-1 me-1 pointer border border-white rounded bg-danger">C</div>
-              <div onclick="showModal('pedido de ${o.name}','alterStatus','${date},${o.hash},deleted')" class="col-auto px-1 ms-3 pointer border border-white rounded bg-danger"><i class="bi-trash"></i></div>
+              <div onclick="alterStatus('${date}','${o.hash}','started')" title="Novo" class="col-auto px-2 me-1 pointer border border-white rounded bg-primary">N</div>
+              <div onclick="alterStatus('${date}','${o.hash}','preparing')" title="Preparar" class="col-auto px-2 me-1 pointer border border-white rounded bg-secondary">P</div>
+              <div onclick="alterStatus('${date}','${o.hash}','paid')" title="Pagar" class="col-auto px-2 me-1 pointer border border-white rounded bg-success">$</div>
+              <div onclick="alterStatus('${date}','${o.hash}','canceled')" title="Cancelar" class="col-auto px-1 me-1 pointer border border-white rounded bg-danger">C</div>
+              <div onclick="showModal('pedido de ${o.name}','alterStatus','${date},${o.hash},deleted')" title="Deletar" class="col-auto px-1 ms-3 pointer border border-white rounded bg-danger"><i class="bi-trash"></i></div>
             </div>
             <hr class="my-2">
              ${itens} 
              ${total.row}
           </div>
         </div>`;
+      }
     });
-    mountListOrders.innerHTML = `${(orders.length) ? orders : '<p class="col-auto my-3 mx-auto">Essa lista está vazia!</p>'}`;
+    resume.row = `<div class="col-12 px-0 pt-2 fs-6 text-center"><small>(${resume.x}) Pagos: ${formatMoney(resume.paid)}</small><small class="px-2">|</small><small>(${resume.y}) Aberto: ${formatMoney(resume.pending)}</small></div>`;
+    mountListOrders.innerHTML = `${(orders) ? `${resume.row}<hr class="my-2">${orders}` : '<p class="col-auto my-3 mx-auto">Essa lista está vazia!</p>'}`;
   }
 
   if (!app.status) srvFail()
@@ -274,7 +293,7 @@ renderOrders = (date, att) => {
           <button onclick="listDailyOrders();clearInterval(myRefresh);" class="btn btn-sm btn-secondary border-white"><i class="bi-arrow-left-circle me-1 align-middle"></i>Voltar</button>
         </div>
         <div class="col col-md-6 col-lg-4 px-0 me-lg-1 ms-auto">
-          <input onkeyup="search()" id="txtSearch" type="text" class="form-control form-control-sm" placeholder="Pesquisar..." />
+          <input onkeyup="search()" ondblclick="txtSearch.value='';search()" id="txtSearch" type="text" class="form-control form-control-sm" placeholder="Pesquisar..." />
         </div>
         <div class="col-auto px-0 mt-1 mt-md-0 d-flex align-items-center">
           <div class="border rounded px-1 me-1 bg-primary" style="--bs-bg-opacity: .7;">
@@ -292,6 +311,9 @@ renderOrders = (date, att) => {
           <div class="border rounded px-1 bg-danger">
             <input onclick="search()" id="checkC" type="checkbox" class="align-middle" />
             <label for="checkC">Cancelado</label>
+          </div>
+          <div class="border rounded px-1">
+            <input onclick="checkedAll()" id="checkAll" type="checkbox" class="align-middle" />
           </div>
         </div>
       </div>
