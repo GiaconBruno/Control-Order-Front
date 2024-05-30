@@ -117,9 +117,15 @@ body {
   transform: scale(1.1);
 }
 
+#auth {
+  height: calc(85vh - 92px);
+  overflow-y: auto;
+}
+
 #home {
-  min-height: calc(85vh - 129px);
   color: #fff;
+  height: calc(85vh - 142px);
+  overflow-y: auto;
 }
 
 #home .card {
@@ -213,12 +219,7 @@ body {
 }
 
 #clientListProd {
-  max-height: calc(85vh - 269px);
-  overflow-y: auto;
-}
-
-#resumeItens {
-  max-height: calc(85vh - 314px);
+  height: calc(85vh - 269px);
   overflow-y: auto;
 }
 
@@ -226,6 +227,16 @@ body {
   min-width: 28px;
   height: 32px;
 }
+
+#orderResume section {
+  min-height: calc(85vh - 170px);
+}
+
+#orderResume #resumeItens {
+  max-height: calc(85vh - 299px);
+  overflow-y: auto;
+}
+
 
 @media screen and (max-width: 992px) {
   #notification {

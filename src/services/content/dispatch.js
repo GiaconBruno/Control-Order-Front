@@ -22,7 +22,7 @@ fixedError = (error) => {
   try { notify('danger', error.data.mensagem) }
   catch {
     setStorage('status', false)
-    init()
+    srv()
   }
 }
 
@@ -31,7 +31,15 @@ srv = () => {
   loading();
   server().then((res) => setStorage('status', res))
     .catch(() => setStorage('status', false))
-    .finally(() => init());
+    .finally(() => [renderAuth(), auth()]);
+}
+
+auth = () => {
+  if (sessionStorage.getItem('Auth')) return init();
+  const auth = { auth: document.querySelector('#passAuth') ? passAuth.value : '' };
+  loading();
+  getAuth(auth).then((res) => [notify('success', res.mensagem), sessionStorage.setItem('Auth', true), init()])
+    .catch((err) => [fixedError(err), sessionStorage.removeItem('Auth'), renderAuth()])
 }
 
 settings = () => {
@@ -42,9 +50,11 @@ settings = () => {
 }
 
 createSettings = () => {
-  const item = { image: loadImg.src, company: confName.value, PIX: confPIX.value, description: confMsg.value }
+  const item = { image: loadImg.src, company: confName.value, PIX: confPIX.value, description: confMsg.value, auth: passAuth.value }
+  loading();
   updateSettings(item).then((res) => notify('success', res.mensagem))
     .catch(() => notify('danger', 'Imagem incompativel!'))
+    .finally(() => settings())
 }
 
 listProd = () => {

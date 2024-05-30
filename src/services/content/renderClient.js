@@ -87,7 +87,7 @@ mountListProducts = (force) => {
 
   loadDefault = () => {
     clientListProd.innerHTML = '';
-    order.products.map((p, i) => clientListProd.innerHTML += `<div class="row mx-0 align-items-center">
+    order.products.map((p, i) => clientListProd.innerHTML += `<div class="row mx-0 my-2 align-items-center">
           <div class="col-6 d-flex align-items-center">
             <i onclick="choice('minus', ${i})" class="bi-patch-minus pointer fs-3 align-middle"></i>
             <div class="mx-3 px-2 bg-white rounded fs-5 text-center text-secondary align-middle">${p.qtd}</div>
@@ -95,8 +95,7 @@ mountListProducts = (force) => {
           </div>
           <div class="col-6 fs-5 text-end ms-auto">${formatMoney(p.valor)}</div>
           <div class="col-12 fs-5 text-start me-auto">${p.descricao}</div>
-        </div>
-        ${(i != (order.products.length - 1)) ? '<hr class="my-2" />' : ''}`
+        </div><hr class="my-0" />`
     );
   }
 
@@ -128,7 +127,7 @@ mountListProducts = (force) => {
           <small>${client.settings.description}</small>
           <hr class="my-2" />
           <div id="clientListProd"></div>
-          <hr class="my-2" />
+          <hr class="my-0 mb-2" />
           <div class="row mx-0 justify-content-around">
             <button onclick="primary()" class="col-auto btn btn-sm btn-secondary border-white"><i class="bi-arrow-left-circle me-1 align-middle"></i>Voltar</button>
             <!-- <button onclick="clearOrder()" class="col-auto btn btn-sm btn-danger border-white"><i class="bi-trash me-1 align-middle"></i>Limpar</button> -->
@@ -149,30 +148,31 @@ renderResume = () => {
   if (!client.status || !client.settings) srvFail()
   else {
     client.order.products.filter(p => p.qtd > 0).map((item, i) => {
-      itens += `<div class="row m-0 justify-content-between">
+      itens += `<div class="row mx-0 my-2 justify-content-between">
         <span class="col-auto m-0 p-0">${item.qtd}x ${item.descricao} </span>
-        <p class="col-auto m-0 p-0">${formatMoney(item.qtd * item.valor)}</p>
-      </div>
-      ${i != (client.order.products.filter(p => p.qtd > 0).length - 1) ? '<hr class="my-2">' : ''}`;
+        <p class="col-auto m-0 ms-auto p-0">${formatMoney(item.qtd * item.valor)}</p>
+      </div><hr class="my-0">`;
       total.x += item.qtd;
       total.value += item.qtd * item.valor;
       total.row = `<div class="row m-0 justify-content-between">
         <p class="col-auto m-0 p-0">(${total.x}) Total </p>
-        <p class="col-auto  m-0 p-0"><b>${formatMoney(total.value)}</b></p></div>`
+        <p class="col-auto m-0 p-0"><b>${formatMoney(total.value)}</b></p></div>`
     })
 
     content.innerHTML = `
     <div id="orderResume" class="row mx-0 my-3 align-items-center justify-content-around transition">
-      <div class="col-lg-4 mx-auto py-3 border rounded">
-        <div class="card p-2 p-lg-3 border-white text-white bg-primary" style="--bs-bg-opacity: .7;">
-          <h4 class="my-0 align-baseline">${client.order.name}</h4>
-          <hr class="my-2">
-          <div id="resumeItens">${itens}</div>
-          <hr class="my-2">
-          ${total.row}
-          <small style="font-size:0.675em;">(${client.order.device})</small>
-        </div>
-        <div class="row mx-0 mt-3 justify-content-around">
+      <div class="col-lg-4 mx-auto py-2 border rounded">
+        <section>
+          <div class="card p-2 p-lg-3 border-white text-white bg-primary" style="--bs-bg-opacity: .7;">
+            <h4 class="my-0 align-baseline">${client.order.name}</h4>
+            <hr class="my-2">
+            <div id="resumeItens">${itens}</div>
+            <hr class="my-0 mb-2" />
+            ${total.row}
+            <small style="font-size:0.675em;">(${client.order.device})</small>
+          </div>
+        </section>
+        <div class="row mx-0 mt-2 justify-content-around">
           <button onclick="listarProd()" class="col-auto btn btn-sm btn-secondary border-white"><i class="bi-arrow-left-circle me-1 align-middle"></i>Voltar</button>
           <button onclick="finishOrder()" class="col-auto btn btn-sm btn-success border-white"><i class="bi-patch-check me-1 align-middle"></i>Finalizar</button>
         </div>

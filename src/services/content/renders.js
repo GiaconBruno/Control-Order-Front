@@ -13,22 +13,44 @@ notify = (status, msg) => {
 
 const iModal = new bootstrap.Modal(modalConfirm, {});
 
+renderAuth = () => {
+  const app = JSON.parse(localStorage.getItem('app'));
+  const section = sessionStorage.getItem('Auth');
+  content.innerHTML = ``;
+  if (!app.status) srvFail()
+  else if (section) { console.log('Autorizado!'); init() }
+  else {
+    content.innerHTML = `
+    <div class="transition">
+      <div id="auth" class="row mx-0 align-items-center justify-content-around">
+        <div class="col-md-6 col-lg-4 p-3 border border-white rounded">
+          <label for="passAuth" class="w-100 text-start">Autorização: </label>
+          <input id="passAuth" type="password" class="form-control my-2" placeholder="Senha de Acesso:" />
+          <botton onclick="auth()" class="btn btn-sm btn-success border border-white">Acessar<i class="bi-check2-circle ps-2"></i></button>
+        </div>
+      </div>
+    </div>`
+    passAuth.value = '';
+    passAuth.addEventListener('keypress', (event) => { if (event.key == 'Enter') auth(); })
+  }
+}
+
 init = () => {
   const app = JSON.parse(localStorage.getItem('app'));
   content.innerHTML = ``;
   if (!app.status) srvFail()
   else {
     content.innerHTML = `
-    <div id="home" class="pt-3 transition">
-      <h3 class="col-12 m-0">Módulos:</h3>
+    <div class="transition">
+      <h3 class="col-12 pt-3 m-0">Módulos:</h3>
       <div id="home" class="row mx-0 align-items-center justify-content-around">
-        <div onclick="settings();" class="col-md-auto px-3 py-3 card border-white bg-secondary" style="--bs-bg-opacity: .85;">
+        <div onclick="settings();" class="col-md-auto p-3 card border-white bg-secondary" style="--bs-bg-opacity: .85;">
           <h2 class="my-auto">Config.</h2>
         </div>
-        <div onclick="listProd();" class="col-md-auto px-3 py-3 card border-white bg-primary" style="--bs-bg-opacity: .85;">
+        <div onclick="listProd();" class="col-md-auto p-3 card border-white bg-primary" style="--bs-bg-opacity: .85;">
           <h2 class="my-auto">Produtos</h2>
         </div>
-        <div onclick="listDailyOrders()" class="col-md-auto px-3 py-3 card border-white bg-success" style="--bs-bg-opacity: .85;">
+        <div onclick="listDailyOrders()" class="col-md-auto p-3 card border-white bg-success" style="--bs-bg-opacity: .85;">
           <h2 class="my-auto">Pedidos</h2>
         </div>
       </div>
@@ -51,6 +73,8 @@ renderSettings = () => {
         <input id="confName" type="text" placeholder="Nome" class="form-control ms-auto my-2" />
         <input id="confPIX" type="text" placeholder="PIX" class="form-control ms-auto my-2" />
         <textarea id="confMsg" type="text" placeholder="Mensagem" row="3" class="form-control ms-auto my-2"> </textarea>
+        <hr class="my-2">
+        <input id="passAuth" type="password" placeholder="Senha de Acesso" class="form-control ms-auto my-2" />
         <hr class="my-2">
         <div class="row justify-content-between mx-0 my-3">
           <div class="col-auto">
@@ -75,6 +99,7 @@ renderSettings = () => {
       confName.value = (app.settings.company || '')
       confPIX.value = (app.settings.PIX || '')
       confMsg.value = (app.settings.description || '')
+      passAuth.value = (app.settings.auth || '')
     }
   }
 }

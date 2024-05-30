@@ -11,6 +11,15 @@ server = () => {
   return promise;
 }
 
+getAuth = (auth) => {
+  let promise = new Promise((resolve, reject) => {
+    axios.post(`/auth`, auth)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error.response));
+  })
+  return promise;
+}
+
 getSettings = () => {
   let promise = new Promise((resolve, reject) => {
     axios.get(`/api/settings`)
